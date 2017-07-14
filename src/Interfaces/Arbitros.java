@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +32,23 @@ public class Arbitros extends javax.swing.JFrame {
     public Arbitros() {
         initComponents();
         cargarpartidos();
+        tblArbitro.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int fila = tblArbitro.getSelectedRow();
+                if (tblArbitro.getSelectedRow() != -1) {
+                   
+                    txtCedula.setText(tblArbitro.getValueAt(fila, 0).toString());
+                    txtNombre.setText(tblArbitro.getValueAt(fila, 1).toString());
+                    txtApellido.setText(tblArbitro.getValueAt(fila, 2).toString());
+                    txtClase.setText(tblArbitro.getValueAt(fila, 2).toString());
+                }
+
+                //botonEliminar();
+             //   btnActualizar.setEnabled(true);
+            }
+        });
     }
 
     public void cargarpartidos() {
@@ -268,6 +287,7 @@ public class Arbitros extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        guardarDatos();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
