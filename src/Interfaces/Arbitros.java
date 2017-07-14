@@ -24,11 +24,10 @@ import javax.swing.table.DefaultTableModel;
 public class Arbitros extends javax.swing.JFrame {
 
     DefaultTableModel modelo;
+
     /**
      * Creates new form Arbitros
      */
-    
-
     public Arbitros() {
         initComponents();
         cargarpartidos();
@@ -38,15 +37,15 @@ public class Arbitros extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 int fila = tblArbitro.getSelectedRow();
                 if (tblArbitro.getSelectedRow() != -1) {
-                   
+
                     txtCedula.setText(tblArbitro.getValueAt(fila, 0).toString());
                     txtNombre.setText(tblArbitro.getValueAt(fila, 1).toString());
                     txtApellido.setText(tblArbitro.getValueAt(fila, 2).toString());
-                    txtClase.setText(tblArbitro.getValueAt(fila, 2).toString());
+                    txtClase.setText(tblArbitro.getValueAt(fila, 3).toString());
                 }
 
                 //botonEliminar();
-             //   btnActualizar.setEnabled(true);
+                //   btnActualizar.setEnabled(true);
             }
         });
     }
@@ -77,8 +76,9 @@ public class Arbitros extends javax.swing.JFrame {
         }
 
     }
+
     public void guardarDatos() {
-        
+
         if (txtCedula.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe Ingresar la Cedula");
             txtCedula.requestFocus();
@@ -99,22 +99,22 @@ public class Arbitros extends javax.swing.JFrame {
                     }
                     conexion cn = new conexion();
                     Connection cc = cn.conectar();
-                    String ID_ARB,NOM_ARB,APE_ARB;
+                    String ID_ARB, NOM_ARB, APE_ARB;
                     int CLASF_FIFA;
                     String sql = "";
                     sql = "INSERT INTO ARBITROS(ID_ARB,NOM_ARB,APE_ARB,CLASF_FIFA) VALUES(?,?,?,?)";
-                   ID_ARB= txtCedula.getText();
-                   NOM_ARB= txtNombre.getText();
-                   APE_ARB= txtApellido.getText();
-                   CLASF_FIFA=Integer.valueOf(txtClase.getText());
-                   
+                    ID_ARB = txtCedula.getText();
+                    NOM_ARB = txtNombre.getText();
+                    APE_ARB = txtApellido.getText();
+                    CLASF_FIFA = Integer.valueOf(txtClase.getText());
+
                     try {
                         PreparedStatement psd = cc.prepareStatement(sql);
                         psd.setString(1, ID_ARB);
                         psd.setString(2, NOM_ARB);
                         psd.setString(3, APE_ARB);
                         psd.setInt(4, CLASF_FIFA);
-                       
+
                         int n = psd.executeUpdate();
                         if (n > 0) {
                             JOptionPane.showMessageDialog(null, "Se a insertado una fila");
@@ -128,6 +128,46 @@ public class Arbitros extends javax.swing.JFrame {
 
         }
 
+    }
+
+    public void modificar() {
+
+        if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Se debe ingresar Goles del Local");
+        } else {
+            if (txtApellido.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Se debe ingresar Goles del Visitante");
+
+            } else {
+                if (txtClase.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Se debe ingresar Goles del Visitante");
+                } else {
+
+                    conexion cc = new conexion();
+                    Connection cn = cc.conectar();
+                    String sql = "";
+                    sql = "UPDATE ARBITROS SET NOM_ARB='" + txtNombre.getText() + "',"
+                            + "APE_ARB='" + txtApellido.getText() + "',"
+                            + "CLASF_FIFA='" + Integer.valueOf(txtClase.getText()) + "'"
+                            + "WHERE ID_ARB='" + txtCedula.getText().toString() + "'";
+                    try {
+                        PreparedStatement psd = cn.prepareStatement(sql);
+                        int n = psd.executeUpdate();
+                        if (n > 0) {
+                            JOptionPane.showMessageDialog(null, "Se actualiso Correctamente");
+                            cargarpartidos();
+                        // botonesInicio();
+                            //limpiar();
+
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex);
+                        JOptionPane.showMessageDialog(null , "No se actualizo");
+                    }
+
+                }
+            }
+        }
     }
 
     /**
@@ -185,6 +225,11 @@ public class Arbitros extends javax.swing.JFrame {
         jButton4.setText("Nuevo");
 
         jButton5.setText("Actualizar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("NUEVO ARBITRO");
 
@@ -289,6 +334,11 @@ public class Arbitros extends javax.swing.JFrame {
         // TODO add your handling code here:
         guardarDatos();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        modificar();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
