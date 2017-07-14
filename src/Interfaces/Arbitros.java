@@ -6,9 +6,12 @@
 package Interfaces;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -55,6 +58,58 @@ public class Arbitros extends javax.swing.JFrame {
         }
 
     }
+    public void guardarDatos() {
+        
+        if (txtCedula.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe Ingresar la Cedula");
+            txtCedula.requestFocus();
+        } else {
+            if (txtApellido.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe Ingresar el Apellido");
+                txtApellido.requestFocus();
+            } else {
+                if (txtNombre.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Debe Ingresar el Nombre");
+                    txtNombre.requestFocus();
+
+                } else {
+                    if (txtClase.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Debe Ingresar la Clase FIFA ");
+                        txtClase.requestFocus();
+
+                    }
+                    conexion cn = new conexion();
+                    Connection cc = cn.conectar();
+                    String ID_ARB,NOM_ARB,APE_ARB;
+                    int CLASF_FIFA;
+                    String sql = "";
+                    sql = "INSERT INTO ARBITROS(ID_ARB,NOM_ARB,APE_ARB,CLASF_FIFA) VALUES(?,?,?,?)";
+                   ID_ARB= txtCedula.getText();
+                   NOM_ARB= txtNombre.getText();
+                   APE_ARB= txtApellido.getText();
+                   CLASF_FIFA=Integer.valueOf(txtClase.getText());
+                   
+                    try {
+                        PreparedStatement psd = cc.prepareStatement(sql);
+                        psd.setString(1, ID_ARB);
+                        psd.setString(2, NOM_ARB);
+                        psd.setString(3, APE_ARB);
+                        psd.setInt(4, CLASF_FIFA);
+                       
+                        int n = psd.executeUpdate();
+                        if (n > 0) {
+                            JOptionPane.showMessageDialog(null, "Se a insertado una fila");
+                            cargarpartidos();
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "El dato no se inserto");
+                    }
+                }
+            }
+
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,6 +148,11 @@ public class Arbitros extends javax.swing.JFrame {
         jLabel5.setText("Clase FIFA");
 
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Cancelar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -205,6 +265,10 @@ public class Arbitros extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
