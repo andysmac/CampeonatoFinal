@@ -25,27 +25,30 @@ public class Equipos extends javax.swing.JFrame {
      */
     public Equipos() {
         initComponents();
-    cargarCiudadE();
+        cargarCiudadE();
     }
-public void cargarCiudadE() {
-    
+
+    public void cargarCiudadE() {
+
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "SELECT COD_EQU FROM CIUDADES";
+        sql = "SELECT cod_ciu FROM CIUDADES";
 
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
             while (rs.next()) {
-               
-                cmbCiudad.addItem(rs.getString("NOM_CIU"));
+
+                cmbCiudad.addItem(rs.getString("cod_ciu"));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "aqui");
         }
     }
-public void guardarDatos() {
+
+    public void guardarDatos() {
         if (txtCodigo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe Ingresar un Código de Equipo");
             txtCodigo.requestFocus();
@@ -66,23 +69,22 @@ public void guardarDatos() {
                     }
                     conexion cn = new conexion();
                     Connection cc = cn.conectar();
-         
+
                     int Num_Tit;
-                    String Cod_Equ,Nom_Equ,Ciu_Equ;
+                    String Cod_Equ, Nom_Equ, Ciu_Equ;
                     String sql = "";
                     sql = "INSERT INTO EQUIPOS(COD_EQU,NOM_EQU,CAN_CAMP_EQU,COD_CIU_PER) VALUES(?,?,?,?)";
-                   
-                    Cod_Equ=txtCodigo.getText().toUpperCase().toString().trim();
-                    Nom_Equ=txtNombre.getText().toString().trim();
+
+                    Cod_Equ = txtCodigo.getText().toUpperCase().toString().trim();
+                    Nom_Equ = txtNombre.getText().toString().trim();
                     Num_Tit = Integer.valueOf(txtTitulo.getText().toString().trim());
-                    Ciu_Equ=  cmbCiudad.getSelectedItem().toString().trim();
+                    Ciu_Equ = cmbCiudad.getSelectedItem().toString().trim();
                     try {
                         PreparedStatement psd = cc.prepareStatement(sql);
                         psd.setString(1, Cod_Equ);
                         psd.setString(2, Nom_Equ);
                         psd.setInt(3, Num_Tit);
                         psd.setString(4, Ciu_Equ);
-                        
 
                         int n = psd.executeUpdate();
                         if (n > 0) {
@@ -90,6 +92,7 @@ public void guardarDatos() {
                         }
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "El dato no se inserto");
+                        JOptionPane.showMessageDialog(rootPane, ex);
                     }
                 }
             }
@@ -97,6 +100,7 @@ public void guardarDatos() {
         }
 
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,7 +118,7 @@ public void guardarDatos() {
         txtCodigo = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         txtTitulo = new javax.swing.JTextField();
-        cmbCiudad = new javax.swing.JComboBox<>();
+        cmbCiudad = new javax.swing.JComboBox<String>();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -239,7 +243,7 @@ public void guardarDatos() {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-guardarDatos();        // TODO add your handling code here:
+        guardarDatos();        // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
