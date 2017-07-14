@@ -19,8 +19,8 @@ public class conexion {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             
-           connect= DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","campeonato","campeonato123");
-//        JOptionPane.showMessageDialog(null,"Conexcion Correcta");
+           connect= DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","CAMPEONATOS","CAMPEONATOS");
+       JOptionPane.showMessageDialog(null,"Conexcion Correcta");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex);
             JOptionPane.showMessageDialog(null,"Fallo la conexion");
