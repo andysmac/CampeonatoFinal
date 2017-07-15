@@ -5,6 +5,12 @@
  */
 package Interfaces;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author sebastian
@@ -17,6 +23,65 @@ public class PlantillaLocal extends javax.swing.JFrame {
     public PlantillaLocal() {
         initComponents();
     }
+     public void cargarEquipos() {
+        conexion cc = new conexion();
+        Connection cn = cc.conectar();
+        String sql = "";
+        sql = "SELECT COD_EQU FROM EQUIPOS";
+
+        try {
+            Statement psd = cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                cmbEquipo.addItem(rs.getString("COD_EQU"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+
+    }
+     
+     public void cargarJugadores(){
+         int EQ;
+         String verificar,EQ1;
+         EQ=cmbEquipo.getSelectedIndex();
+         EQ1=cmbEquipo.getSelectedItem().toString();
+         verificar= "SELECT J.APE_JUG FROM JUGADORES J GROUP BY COD_EQU_PER ";
+         if (EQ!=0){
+             if(EQ1.equals("Bar")){
+                 conexion cc = new conexion();
+        Connection cn = cc.conectar();
+        String sql = "";
+        sql = "SELECT COD_EQU FROM EQUIPOS";
+
+        try {
+            Statement psd = cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                cmbTit1.addItem(rs.getString("COD_EQU"));
+                cmbTit2.addItem(rs.getString("COD_EQU"));
+                cmbTit3.addItem(rs.getString("COD_EQU"));
+                cmbTit4.addItem(rs.getString("COD_EQU"));
+                cmbTit5.addItem(rs.getString("COD_EQU"));
+                cmbTit6.addItem(rs.getString("COD_EQU"));
+                cmbTit7.addItem(rs.getString("COD_EQU"));
+                cmbTit8.addItem(rs.getString("COD_EQU"));
+                cmbTit9.addItem(rs.getString("COD_EQU"));
+                 cmbTit10.addItem(rs.getString("COD_EQU"));
+                cmbTit11.addItem(rs.getString("COD_EQU"));
+                 cmbSup1.addItem(rs.getString("COD_EQU"));
+                cmbSup2.addItem(rs.getString("COD_EQU"));
+                cmbSup3.addItem(rs.getString("COD_EQU"));
+                cmbSup4.addItem(rs.getString("COD_EQU"));
+                cmbSup5.addItem(rs.getString("COD_EQU"));
+                cmbSup6.addItem(rs.getString("COD_EQU"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        } 
+             }
+         }
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,6 +128,8 @@ public class PlantillaLocal extends javax.swing.JFrame {
         cmbSup4 = new javax.swing.JComboBox<>();
         cmbSup5 = new javax.swing.JComboBox<>();
         cmbSup6 = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        cmbEquipo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -264,21 +331,35 @@ public class PlantillaLocal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel12.setText("Equipo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(28, 28, 28))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel12)
+                        .addGap(40, 40, 40)
+                        .addComponent(cmbEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(cmbEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -324,6 +405,7 @@ public class PlantillaLocal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmbEquipo;
     private javax.swing.JComboBox<String> cmbSup1;
     private javax.swing.JComboBox<String> cmbSup2;
     private javax.swing.JComboBox<String> cmbSup3;
@@ -344,6 +426,7 @@ public class PlantillaLocal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
