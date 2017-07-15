@@ -6,6 +6,7 @@
 package Interfaces;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,19 +29,94 @@ public class Amonestaciones extends javax.swing.JFrame {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "SELECT cod_ciu FROM CIUDADES";
+        sql = "SELECT COD_PAR FROM PARTIDOS";
 
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
             while (rs.next()) {
 
-                cmbCiudad.addItem(rs.getString("cod_ciu"));
+                cmbNPartido.addItem(rs.getString("COD_PAR"));
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
             JOptionPane.showMessageDialog(null, "aqui");
         }
+    }
+      public void guardarDatos() {
+        if (txtCodigo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el codigo del partido ");
+            txtCodigo.requestFocus();
+        } else {
+            if (txtMinuto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Ingrese Minuto de Amonestación");
+                txtMinuto.requestFocus();
+            } else {
+                if (cmbTipoAmonestacion.getSelectedIndex()==0) {
+                    JOptionPane.showMessageDialog(null, "Seleccione una sanción");
+                    cmbTipoAmonestacion.requestFocus();
+
+                } else {
+                    if (txtJugadorA.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Ingrese el Jugador Amonestado");
+                        txtJugadorA.requestFocus();
+
+                    }else {
+                    if (cmbNPartido.getSelectedIndex()==0) {
+                    JOptionPane.showMessageDialog(null, "Seleccione el numero de partido");
+                    cmbNPartido.requestFocus();
+                    }
+                    conexion cn = new conexion();
+                    Connection cc = cn.conectar();
+
+                    int  MIN_AMO;
+                    String COD_AMO, TIPO_AMO,ID_JUG_AMO,NUM_PAR_PER;
+                    String sql = "";
+                    sql = "INSERT INTO AMONESTACIONES(COD_AMO,MIN_AMO,TIPO_AMO,ID_JUG_AMO,NUM_PAR_PER) VALUES(?,?,?,?,?)";
+                    
+                    COD_AMO=txtCodigo.getText().toString().trim();
+                    MIN_AMO=Integer.valueOf(txtMinuto.getText().toString().trim());
+                    TIPO_AMO=cmbTipoAmonestacion.getSelectedItem().toString().trim();
+                    ID_JUG_AMO=txtJugadorA.getText().toUpperCase().toString().trim();
+                    NUM_PAR_PER=cmbNPartido.getSelectedItem().toString().trim();
+                   
+                    try {
+                        PreparedStatement psd = cc.prepareStatement(sql);
+                        psd.setString(1, COD_AMO);
+                        psd.setInt(2, MIN_AMO);
+                        psd.setString(3, TIPO_AMO);
+                        psd.setString(4, ID_JUG_AMO);
+                        psd.setString(5, NUM_PAR_PER);
+
+                        int n = psd.executeUpdate();
+                        if (n > 0) {
+                            JOptionPane.showMessageDialog(null, "Se a insertado una fila");
+                            //cargarTablaEquipos("");
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "El dato no se inserto");
+                        JOptionPane.showMessageDialog(rootPane, ex);
+                    }
+                    }
+                }
+            }
+        }
+
+    }
+      public void LimpiarCampos(){
+    txtCodigo.setText("");
+    txtMinuto.setText("");
+    cmbTipoAmonestacion.setSelectedIndex(0);
+    txtJugadorA.setText("");
+    cmbNPartido.setSelectedIndex(0);
+}
+
+ public void nuevo() {
+        txtCodigo.requestFocus();
+        btnNuevo.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        btnSalir.setEnabled(true);
+        btnCancelar.setEnabled(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.
