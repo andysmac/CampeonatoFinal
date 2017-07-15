@@ -58,7 +58,7 @@ public class Jugadores1 extends javax.swing.JFrame {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "SELECT * FROM JUGADORES ORDER BY COD_EQU ASC";
+        sql = "SELECT * FROM JUGADORES";
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
@@ -141,7 +141,7 @@ public class Jugadores1 extends javax.swing.JFrame {
                 String CED_JUG, NOM_JUG, APE_JUG, FEC_NAC_JUG, POS_JUG, EST_JUG, COD_EQU_PER;
                 int NUM_TAR_AMA, NUM_TAR_ROJ;
                 String sql = "";
-                sql = "INSERT INTO EQUIPOS(CED_JUG,NOM_JUG,APE_JUG,FEC_NAC_JUG,POS_JUG,NUM_TAR_AMA,NUM_TAR_ROJ,EST_JUG,COD_EQU_PER) VALUES(?,?,?,?,?,?,?,?,?)";
+                sql = "INSERT INTO JUGADORES(CED_JUG,NOM_JUG,APE_JUG,FEC_NAC_JUG,POS_JUG,NUM_TAR_AMA,NUM_TAR_ROJ,EST_JUG,COD_EQU_PER) VALUES(?,?,?,?,?,?,?,?,?)";
 
                 CED_JUG = txtCedula.getText().toUpperCase().toString().trim();
                 NOM_JUG = txtNombre.getText().toUpperCase().toString().trim();
@@ -162,7 +162,7 @@ public class Jugadores1 extends javax.swing.JFrame {
                     psd.setInt(6, NUM_TAR_AMA);
                     psd.setInt(7, NUM_TAR_ROJ);
                     psd.setString(8, EST_JUG);
-                    psd.setString(8, COD_EQU_PER);
+                    psd.setString(9, COD_EQU_PER);
 
                     int n = psd.executeUpdate();
                     if (n > 0) {
